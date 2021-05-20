@@ -1,7 +1,7 @@
 /*
  * fecha.h
  *
- *  Created on: 11 may. 2021
+ *  Created on: 19 may. 2021
  *      Author: Asus
  */
 
@@ -14,5 +14,6 @@ typedef struct
 	int mes;
 	int anio;
 }eFecha;
+
 
 #endif /* FECHA_H_ */

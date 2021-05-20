@@ -1,22 +1,18 @@
 /*
- * sector.c
+ * colores.c
  *
- *  Created on: 7 may. 2021
+ *  Created on: 19 may. 2021
  *      Author: Asus
  */
-#include "mascota.h"
-#include "color.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
 #include "utn.h"
-
-#include "informes.h"
-#include "fecha.h"
+#include "mascota.h"
 #include "tipo.h"
-#include "servicio.h"
+#include "colores.h"
 
 int cargarDescripcionColor(int id, eColor color[], int len, char desc[])
 {
@@ -28,7 +24,7 @@ int cargarDescripcionColor(int id, eColor color[], int len, char desc[])
 		{
 			if(color[i].id==id)
 			{
-				strcpy(desc,color[i].nombreColor);
+				strcpy(desc,color[i].descripcion);
 				error=0;
 				break;
 			}
@@ -37,30 +33,26 @@ int cargarDescripcionColor(int id, eColor color[], int len, char desc[])
 	return error;
 }
 
-void mostrarSector(eColor color)
+void mostrarColor(eColor color)
 {
-	printf(" %d     %8s\n",color.id,color.nombreColor);
+	printf(" %d     %8s\n",color.id,color.descripcion);
 }
 
 
-int mostrarArrayColore(eColor color[], int len)
+int mostrarArrayColor(eColor color[], int len)
 {
 	int error=-1;
 
 	if(color!=NULL&& len>0)
 	{
-		printf("Id   Descripcion\n");
+		printf("IdColor Descripcion\n");
 		for(int i=0; i<len; i++)
 		{
-			mostrarSector(color[i]);
+			mostrarColor(color[i]);
 		}
 		error=0;
 	}
 
 	return error;
 }
-
-
-
-
 
