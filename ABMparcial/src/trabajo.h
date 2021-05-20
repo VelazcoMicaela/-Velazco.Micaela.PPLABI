@@ -61,6 +61,8 @@ int inicializarTrabajo(eTrabajo trabajo[], int len);
  * incrementa el id,
  * \param trabajo eTrabajo
  * \param len int
+ * \param eMascota mascota
+ * \param lenMas int
  * \param eTipo tipo
  * \param lenTip int
  * \param color eColor

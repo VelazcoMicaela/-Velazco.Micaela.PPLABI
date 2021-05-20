@@ -183,6 +183,7 @@ int buscarLibreTrabajo(eTrabajo trabajo[], int len,int* indice)
 }
 
 
+
 int hardcodearTrabajo(eTrabajo trabajo[], int len, int cant, int* pLegajo)
 {
 	int cantidad=0;

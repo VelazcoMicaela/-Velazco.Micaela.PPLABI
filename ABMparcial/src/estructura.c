@@ -90,7 +90,7 @@ int main(void) {
 	{
 		printf("\n**** ABM MASCOTA ****");
 		respuesta=utn_getNumeroEnteroConIntentos(&opcion, "\nSeleccione una opcion\n 1-Alta Mascota\n 2-Modificar Mascota \n 3-Baja Mascota\n 4-Listar Mascota\n "
-				"5-Listar Tipos\n 6-Listar Color \n 7-Listar Servicios\n 8-Alta Trabajo\n 9-Listar Trabajo\n 12-Salir ", "ERROR no es una opcion valida\n", 1, 12, 5);
+				"5-Listar Tipos\n 6-Listar Color \n 7-Listar Servicios\n 8-Alta Trabajo\n 9-Listar Trabajo\n 10-Baja Trabajo\n 15-Salir ", "ERROR no es una opcion valida\n", 1, 12, 5);
 
 		if(respuesta==0)
 		{
@@ -179,7 +179,15 @@ int main(void) {
 					}
 					break;
 
-				case 12:
+				case 10:
+					printf("-----Baja Trabajo-----\n");
+					if(bajaTrabajo(trabajo, TAMTRAB, servicio, TAMSER, mascota, TAM)==0)
+					{
+						printf("Baja exitosa\n");
+					}
+					break;
+
+				case 15:
 					printf("salir?\n");
 					if(utn_getCaracterCorroboraDosCarac(&salir, "Desea salir? S/N\n", "ERROR Ingrese S para salir o N para quedarse", 's', 'n')==0)
 					{

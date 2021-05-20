@@ -150,10 +150,10 @@ int bajaMascota(eMascota mascota[], int len, eTipo tipo[], int lenTip, eColor co
 	int indice;
 	char eliminar;
 
-	if(mascota!=NULL&&len>0)
+	if(mascota!=NULL && len>0 && tipo!=NULL && lenTip>0 && color!=NULL && lenCol>0)
 	{
 		mostrarArrayMascota(mascota, len,tipo,lenTip,color, lenCol);
-		if(utn_getNumeroEnteroConIntentos(&legajo, "Ingrese legajo ", "ERROR Reingrese legajo entre 2000 y 3000 ", 1999, 3000, 5)==0)
+		if(utn_getNumeroEnteroConIntentos(&legajo, "Ingrese id a dar de baja", "ERROR Reingrese id entre 4000 y 5000 ", 4000, 4000+len, 5)==0)
 		{
 			if(buscarMascota(mascota, len, &indice, legajo)==0)
 			{
