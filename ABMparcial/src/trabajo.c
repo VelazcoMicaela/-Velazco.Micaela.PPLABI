@@ -14,6 +14,7 @@
 #include "mascota.h"
 #include "tipo.h"
 #include "colores.h"
+#include "cliente.h"
 
 
 
@@ -85,7 +86,7 @@ int inicializarTrabajo(eTrabajo trabajo[], int len)
 	return error;
 }
 
-int cargarTrabajo(eTrabajo trabajo[], int len,int* pLegajo, eServicio servicio[],int lenSer, eMascota mascota[], int lenMas, eTipo tipo[], int lenTip, eColor color[], int lenCol)
+int cargarTrabajo(eTrabajo trabajo[], int len,int* pLegajo, eServicio servicio[],int lenSer, eMascota mascota[], int lenMas, eTipo tipo[], int lenTip, eColor color[], int lenCol, eCliente cliente[], int lenCliente)
 {
 	int error=-1;
 	int indice;
@@ -100,7 +101,7 @@ int cargarTrabajo(eTrabajo trabajo[], int len,int* pLegajo, eServicio servicio[]
 			if(buscarLibreTrabajo(trabajo, len, &indice)==0)
 			{
 				printf("Id %d\n",*pLegajo);
-				if(mostrarArrayMascota(mascota, lenMas, tipo, lenTip, color, lenCol)==0)
+				if(mostrarArrayMascota(mascota, lenMas, tipo, lenTip, color, lenCol, cliente,lenCliente)==0)
 				{
 					if(utn_getNumeroEnteroConIntentos(&aux.idMascota, "Ingrese idMascota", "ERROR Reingrese idMascota entre 4000 y 5000 ", 4000, 5000, 5)==0)
 					{
@@ -182,7 +183,60 @@ int buscarLibreTrabajo(eTrabajo trabajo[], int len,int* indice)
 	return error;
 }
 
+int bajaTrabajo(eTrabajo trabajo[],int len, eServicio servicio[],int lenSer, eMascota mascota[], int lenMas)
+{
+	int error=-1;
+	int legajo;
+	int indice;
+	char eliminar;
 
+	if(trabajo!=NULL&& len>0&& servicio!=NULL&& lenSer>0 && mascota!=NULL&& lenMas>0)
+	{
+		mostrarArrayTrabajo(trabajo, len, servicio, lenSer, mascota, lenMas);
+
+		if(utn_getNumeroEnteroConIntentos(&legajo, "Ingrese id a dar de baja", "ERROR Reingrese id entre 3000 y 4000 ", 3000, 3000+len, 5)==0)
+		{
+			if(buscarTrabajo(trabajo, len, &indice, legajo)==0)
+			{
+				mostrarUnTrabajoConRotulo(trabajo[indice], servicio, lenSer, mascota, lenMas);
+
+				if(utn_getCaracterCorroboraDosCarac(&eliminar, "Desea eliminar? S/N\n", "ERROR Ingrese S para eliminar o N para volver", 's', 'n')==0)
+				{
+					if(eliminar=='s')
+					{
+						trabajo[indice].isEmpty=VACIO;
+						error=0;
+					}
+					else
+					{
+						printf("Baja cancelada por el usuario\n");
+					}
+				}
+			}
+			else
+			{
+				printf("No hay trabajo con ese id %d \n",legajo);
+			}
+		}
+	}
+
+	return error;
+}
+
+int mostrarUnTrabajoConRotulo(eTrabajo trabajo, eServicio servicio[],int lenSer, eMascota mascota[], int lenMas)
+{
+	int error=-1;
+	if(servicio!=NULL && lenSer>0 && mascota!=NULL && lenMas>0)
+	{
+		printf("\n Id   IdMas     Nombre  IdServ  DescServicio  Fecha\n");
+		mostrarTrabajo(trabajo, servicio, lenSer, mascota, lenMas);
+		printf("-------------------------------------------------------\n");
+
+		error=0;
+	}
+
+	return error;
+}
 
 int hardcodearTrabajo(eTrabajo trabajo[], int len, int cant, int* pLegajo)
 {
@@ -190,16 +244,16 @@ int hardcodearTrabajo(eTrabajo trabajo[], int len, int cant, int* pLegajo)
 
 	eTrabajo trabajo2[10]=
 	{
-			{0,4000,2000,{26,4,2019},0},
+			{0,4000,2002,{26,4,2019},0},
 			{0,4001,2000,{18,6,2020},0},
 			{0,4002,2002,{11,10,2016},0},
 			{0,4003,2002,{29,4,2014},0},
-			{0,4004,2001,{13,3,2013},0},
-			{0,4005,2000,{15,9,2008},0},
-			{0,4006,2001,{2,12,2018},0},
-			{0,4007,2002,{6,11,2017},0},
-			{0,4008,2000,{16,3,2018},0},
-			{0,4009,2000,{19,1,2011},0},
+			{0,4004,2000,{13,3,2013},0},
+			{0,4000,2000,{15,9,2008},0},
+			{0,4001,2002,{2,12,2018},0},
+			{0,4002,2002,{6,11,2017},0},
+			{0,4003,2000,{16,3,2018},0},
+			{0,4004,2000,{19,1,2011},0},
 	};
 
 	if(trabajo!=NULL&& trabajo2!=NULL&& len>0 && cant>=0 && cant<=len && pLegajo!=NULL)

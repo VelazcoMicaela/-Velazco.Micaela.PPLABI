@@ -23,7 +23,7 @@ typedef struct
 	int isEmpty;
 }eTrabajo;
 
-/** \brief imprime el contenido de una mascota con descripciones de tipo y color
+/** \brief imprime el contenido de una trabajo con descripciones de servicio y mascota
  * \param trabajo eTrabajo
  * \param eServicio servicio
  * \param lenSer int
@@ -35,7 +35,7 @@ typedef struct
 int mostrarTrabajo(eTrabajo trabajo,eServicio servicio[],int lenSer, eMascota mascota[], int lenMas);
 
 
-/** \brief imprime el contenido de una un array de mascota con descripciones de tipo y color
+/** \brief imprime el contenido de una un array de trabajo con descripciones de tipo y color
  * \param trabajo eTrabajo
  * \param len int
  * \param eTipo tipo
@@ -71,7 +71,7 @@ int inicializarTrabajo(eTrabajo trabajo[], int len);
  * \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
  *
  */
-int cargarTrabajo(eTrabajo trabajo[], int len,int* pLegajo, eServicio servicio[],int lenSer, eMascota mascota[], int lenMas, eTipo tipo[], int lenTip, eColor color[], int lenCol);
+int cargarTrabajo(eTrabajo trabajo[], int len,int* pLegajo, eServicio servicio[],int lenSer, eMascota mascota[], int lenMas, eTipo tipo[], int lenTip, eColor color[], int lenCol, eCliente cliente[], int lenCliente);
 
 
 /** \brief busca el primer índice libre de la lista,
@@ -96,6 +96,30 @@ int buscarLibreTrabajo(eTrabajo trabajo[], int len,int* indice);
 int buscarTrabajo(eTrabajo trabajo[], int len, int* indice, int legajo);
 
 
+
+/** \brief pone el isEmpty VACIO el indice ingresado por el usuario
+ * en la primera posición vacía
+ * \param trabajo eTrabajo
+ * \param eServicio servicio
+ * \param lenSer int
+ * \param eMascota mascota
+ * \param lenMas int
+ * \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
+ *
+ */
+int bajaTrabajo(eTrabajo trabajo[],int len, eServicio servicio[],int lenSer, eMascota mascota[], int lenMas);
+
+
+/** \brief imprime el contenido de una trabajo con descripciones de servicio y mascota y el rotulo encima
+ * \param trabajo eTrabajo
+ * \param eServicio servicio
+ * \param lenSer int
+ * \param eMascota mascota
+ * \param lenMas int
+ * \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
+ *
+ */
+int mostrarUnTrabajoConRotulo(eTrabajo trabajo, eServicio servicio[],int lenSer, eMascota mascota[], int lenMas);
 
 /** \brief carga un array de 10 trabajo en la lista
  * \param trabajo eTrabajo

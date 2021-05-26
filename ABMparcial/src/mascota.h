@@ -9,6 +9,7 @@
 #define MASCOTA_H_
 #include "tipo.h"
 #include "colores.h"
+#include "cliente.h"
 
 
 
@@ -18,6 +19,7 @@ typedef struct
 	char nombre [20];
 	int idTipo;
 	int idColor;
+	int idCliente;
 	int edad;
 	int isEmpty;
 }eMascota;
@@ -31,10 +33,12 @@ typedef struct
  * \param lenTip int
  * \param color eColor
  * \param lenCol int
+ * \param eCliente dueno
+ * \param lenDueno int
  * \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
  *
  */
-int mostrarMascota(eMascota mascota, eTipo tipo[], int len,eColor color[], int lenCol);
+int mostrarMascota(eMascota mascota, eTipo tipo[], int len,eColor color[], int lenCol, eCliente cliente[], int lenCliente);
 
 
 /** \brief imprime el contenido de una un array de mascota con descripciones de tipo y color
@@ -47,7 +51,7 @@ int mostrarMascota(eMascota mascota, eTipo tipo[], int len,eColor color[], int l
  * \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
  *
  */
-int mostrarArrayMascota(eMascota mascota[],int len, eTipo tipo[], int lenTip, eColor color[], int lenCol);
+int mostrarArrayMascota(eMascota mascota[],int len, eTipo tipo[], int lenTip, eColor color[], int lenCol, eCliente cliente[], int lenCliente);
 
 
 /** \brief todas las posisiones en isEmty esten en VACIO,
@@ -59,8 +63,7 @@ int mostrarArrayMascota(eMascota mascota[],int len, eTipo tipo[], int lenTip, eC
 int inicializarMascota(eMascota mascota[], int len);
 
 
-/** \brief agrega en una lista existente de mascota los valores cargados
- * en la primera posición vacía
+/** \brief pone el isEmpty VACIO el indice ingresado por el usuario
  * \param mascota eMascota
  * \param len int
  * \param eTipo tipo
@@ -70,7 +73,7 @@ int inicializarMascota(eMascota mascota[], int len);
  * \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
  *
  */
-int bajaMascota(eMascota mascota[], int len, eTipo tipo[], int lenTip, eColor color[], int lenCol);
+int bajaMascota(eMascota mascota[], int len, eTipo tipo[], int lenTip, eColor color[], int lenCol, eCliente cliente[], int lenCliente);
 
 
 /** \brief Ingresa una mascota al array (pone la bandera isEmpty en 1)
@@ -85,7 +88,7 @@ int bajaMascota(eMascota mascota[], int len, eTipo tipo[], int lenTip, eColor co
  * \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
  *
  */
-int cargarMascota(eMascota mascota[], int len,int* pLegajo, eTipo tipo[], int lenTip, eColor color[], int lenCol);
+int cargarMascota(eMascota mascota[], int len,int* pLegajo, eTipo tipo[], int lenTip, eColor color[], int lenCol, eCliente cliente[], int lenCliente);
 
 
 /** \brief busca el primer índice libre de la lista,
@@ -121,7 +124,7 @@ int buscarMascota(eMascota mascota[], int len, int* indice, int legajo);
  * \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
  *
  */
-int modificarMascota(eMascota mascota[], int len, eTipo tipo[], int lenTip, eColor color[], int lenCol);
+int modificarMascota(eMascota mascota[], int len, eTipo tipo[], int lenTip, eColor color[], int lenCol, eCliente cliente[], int lenCliente);
 
 
 
@@ -134,7 +137,22 @@ int modificarMascota(eMascota mascota[], int len, eTipo tipo[], int lenTip, eCol
  * \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
  *
  */
-int menuModificacionMascota(eMascota* mascota, eTipo tipo[], int lenTip, eColor color[], int lenCol);
+int menuModificacionMascota(eMascota* mascota, eTipo tipo[], int lenTip, eColor color[], int lenCol, eCliente cliente[], int lenCliente);
+
+
+
+/** \brief imprime el contenido de una mascota con descripciones de servicio y mascota y el rotulo encima
+ * \param mascota eMascota
+ * \param len int
+ * \param eTipo tipo
+ * \param lenTip int
+ * \param color eColor
+ * \param lenCol int
+ * \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
+ *
+ */
+int mostrarUnMascotaConRotulo(eMascota mascota, eTipo tipo[], int len,eColor color[], int lenCol, eCliente cliente[],int lenCliente);
+
 
 
 /** \brief carga el nombre del id ingresado de la lista mascota

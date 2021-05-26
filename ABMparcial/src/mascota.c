@@ -12,6 +12,8 @@
 #include <string.h>
 #include "utn.h"
 #include "mascota.h"
+
+#include "cliente.h"
 #include "tipo.h"
 #include "informes.h"
 #include "colores.h"
@@ -23,20 +25,22 @@
 #define VACIO 1
 
 
-int mostrarMascota(eMascota mascota, eTipo tipo[], int len,eColor color[], int lenCol)//
+int mostrarMascota(eMascota mascota, eTipo tipo[], int len,eColor color[], int lenCol, eCliente cliente[], int lenCliente)//
 {
 	int error=-1;
 	char descTip[20];
 	char descCol[20];
+	char descCliente[20];
 
-	if(tipo!=NULL&& len>0 && color!=NULL&& lenCol>0)
+	if(tipo!=NULL&& len>0 && color!=NULL&& lenCol>0 && cliente!=NULL&& lenCliente>0)
 	{
 		if(cargarDescripcionTipo(mascota.idTipo, tipo,len, descTip)==0)
 		{
 			if(cargarDescripcionColor(mascota.idColor, color, lenCol, descCol)==0)
 			{
-				printf("%5d  %10s   %d  %10s   %d %10s  %d\n",mascota.id,
-				mascota.nombre, mascota.idTipo, descTip, mascota.idColor,descCol,
+				if(cargarDescripcionCliente(mascota.idCliente, cliente, len, descCliente)==0)
+				printf("%5d  %10s   %d  %10s   %d %10s  %d %10s %d\n",mascota.id,
+				mascota.nombre, mascota.idTipo, descTip, mascota.idColor,descCol, mascota.idCliente,descCliente,
 				mascota.edad);
 			}
 		}
@@ -47,19 +51,19 @@ int mostrarMascota(eMascota mascota, eTipo tipo[], int len,eColor color[], int l
 
 }
 
-int mostrarArrayMascota(eMascota mascota[],int len, eTipo tipo[], int lenTip, eColor color[], int lenCol)
+int mostrarArrayMascota(eMascota mascota[],int len, eTipo tipo[], int lenTip, eColor color[], int lenCol, eCliente cliente[], int lenCliente)
 {
 	int error=-1;
 	int flag=0;
 
-	if(mascota!=NULL&& len>0&& tipo!=NULL&& lenTip>0 && color!=NULL&& lenCol>0)
+	if(mascota!=NULL&& len>0&& tipo!=NULL&& lenTip>0 && color!=NULL&& lenCol>0 && cliente!=NULL&& lenCliente>0)
 	{
-		printf("\n Id        Nombre  IdTipo  DescTipo  IdColor DescColor Edad\n");
+		printf("\n Id        Nombre  IdTipo  DescTipo  IdColor DescColor IdDueno DescDueno Edad\n");
 		for(int i=0; i<len; i++)
 		{
 			if(mascota[i].isEmpty==LLENO)
 			{
-				mostrarMascota(mascota[i],tipo,lenTip,color, lenCol);
+				mostrarMascota(mascota[i],tipo,lenTip,color, lenCol, cliente, lenCliente);
 				flag=1;
 			}
 		}
@@ -89,14 +93,14 @@ int inicializarMascota(eMascota mascota[], int len)
 	return error;
 }
 
-int cargarMascota(eMascota mascota[], int len,int* pLegajo, eTipo tipo[], int lenTip, eColor color[], int lenCol)
+int cargarMascota(eMascota mascota[], int len,int* pLegajo, eTipo tipo[], int lenTip, eColor color[], int lenCol, eCliente cliente[], int lenCliente )
 {
 	int error=-1;
 	int indice;
 	char respuesta;
 	eMascota aux;
 
-	if(mascota!=NULL && pLegajo!=NULL && len>0 && tipo!=NULL && lenTip>0 && color!=NULL && lenCol>0 )
+	if(mascota!=NULL && pLegajo!=NULL && len>0 && tipo!=NULL && lenTip>0 && color!=NULL && lenCol>0  && cliente!=NULL&& lenCliente>0)
 	{
 
 		while(respuesta!='n')
@@ -114,14 +118,21 @@ int cargarMascota(eMascota mascota[], int len,int* pLegajo, eTipo tipo[], int le
 							{
 								if(utn_getNumeroEnteroConIntentos(&aux.idColor, "Ingrese idColor", "ERROR Reingrese idColor entre 5000 y 5004 ", 5000, 5004, 5)==0)
 								{
-									if(utn_getNumeroEnteroConIntentos(&aux.edad, "Ingrese edad ", "ERROR Reingrese edad 0 y 100", 0, 100, 5)==0)
+									if(mostrarArrayCliente(cliente, lenCliente)==0)
 									{
-										aux.isEmpty=0;
-										mascota[indice]=aux;
-										mascota[indice].id=*pLegajo;
-										(*pLegajo)++;
-										error=0;
+										if(utn_getNumeroEnteroConIntentos(&aux.idCliente, "Ingrese idCliente", "ERROR Reingrese idCliente entre 500 y 502 ", 500, 500+lenCliente, 5)==0)
+										{
+											if(utn_getNumeroEnteroConIntentos(&aux.edad, "Ingrese edad ", "ERROR Reingrese edad 0 y 100", 0, 100, 5)==0)
+											{
+												aux.isEmpty=0;
+												mascota[indice]=aux;
+												mascota[indice].id=*pLegajo;
+												(*pLegajo)++;
+												error=0;
+											}
+										}
 									}
+
 								}
 							}
 						}
@@ -143,21 +154,21 @@ int cargarMascota(eMascota mascota[], int len,int* pLegajo, eTipo tipo[], int le
 	return error;
 }
 
-int bajaMascota(eMascota mascota[], int len, eTipo tipo[], int lenTip, eColor color[], int lenCol)
+int bajaMascota(eMascota mascota[], int len, eTipo tipo[], int lenTip, eColor color[], int lenCol, eCliente cliente[], int lenCliente)
 {
 	int error=-1;
 	int legajo;
 	int indice;
 	char eliminar;
 
-	if(mascota!=NULL && len>0 && tipo!=NULL && lenTip>0 && color!=NULL && lenCol>0)
+	if(mascota!=NULL && len>0 && tipo!=NULL && lenTip>0 && color!=NULL && lenCol>0  && cliente!=NULL&& lenCliente>0)
 	{
-		mostrarArrayMascota(mascota, len,tipo,lenTip,color, lenCol);
+		mostrarArrayMascota(mascota, len,tipo,lenTip,color, lenCol, cliente,lenCliente );
 		if(utn_getNumeroEnteroConIntentos(&legajo, "Ingrese id a dar de baja", "ERROR Reingrese id entre 4000 y 5000 ", 4000, 4000+len, 5)==0)
 		{
 			if(buscarMascota(mascota, len, &indice, legajo)==0)
 			{
-				mostrarMascota(mascota[indice],tipo,lenTip,color, lenCol);
+				mostrarUnMascotaConRotulo(mascota[indice], tipo, lenTip, color, lenCol, cliente,lenCliente);
 				if(utn_getCaracterCorroboraDosCarac(&eliminar, "Desea eliminar? S/N\n", "ERROR Ingrese S para eliminar o N para volver", 's', 'n')==0)
 				{
 					if(eliminar=='s')
@@ -223,22 +234,21 @@ int buscarLibreMascota(eMascota mascota[], int len,int* indice)
 }
 
 
-int modificarMascota(eMascota mascota[], int len, eTipo tipo[], int lenTip, eColor color[], int lenCol)
+int modificarMascota(eMascota mascota[], int len, eTipo tipo[], int lenTip, eColor color[], int lenCol, eCliente cliente[], int lenCliente )
 {
 	int error=-1;
 	int id;
 	int indice;
 
-	if(mascota!=NULL && len>0 && tipo!=NULL && lenTip>0 && color!=NULL && lenCol>0)
+	if(mascota!=NULL && len>0 && tipo!=NULL && lenTip>0 && color!=NULL && lenCol>0 && cliente!=NULL && lenCliente>0)
 	{
-		if(mostrarArrayMascota(mascota, len, tipo, lenTip, color, lenCol)==0 &&
-				utn_getNumeroEnteroConIntentos(&id, "Ingrese el id a modificar ", "ERROR id debe esta entre 2000 a 3000. Reingrese ", 2000, 3000, 5)==0 &&
+		if(mostrarArrayMascota(mascota, len, tipo, lenTip, color, lenCol, cliente,lenCliente)==0 &&
+				utn_getNumeroEnteroConIntentos(&id, "Ingrese el id a modificar ", "ERROR id debe esta entre 4000 a 5000. Reingrese ", 4000, 4000+len, 5)==0 &&
 				buscarMascota(mascota, len, &indice, id)==0)
 		{
-			printf("\n Id        Nombre  IdTipo  DescTipo  IdColor DescColor Edad\n");
-			mostrarMascota(mascota[indice], tipo, lenTip, color, lenCol);
+			mostrarUnMascotaConRotulo(mascota[indice], tipo, lenTip, color, lenCol, cliente,lenCliente);
 
-			if(menuModificacionMascota(&mascota[indice], tipo, lenTip, color, lenCol)==0)
+			if(menuModificacionMascota(&mascota[indice], tipo, lenTip, color, lenCol, cliente,lenCliente)==0)
 			{
 				error=0;
 			}
@@ -248,7 +258,7 @@ int modificarMascota(eMascota mascota[], int len, eTipo tipo[], int lenTip, eCol
 	return error;
 }
 
-int menuModificacionMascota(eMascota* mascota, eTipo tipo[], int lenTip, eColor color[], int lenCol)
+int menuModificacionMascota(eMascota* mascota, eTipo tipo[], int lenTip, eColor color[], int lenCol, eCliente cliente[], int lenCliente)
 {
 	int error=-1;
 	int opcion;
@@ -258,7 +268,7 @@ int menuModificacionMascota(eMascota* mascota, eTipo tipo[], int lenTip, eColor 
 
 	cancelacion=*mascota;
 
-	if(mascota!=NULL && tipo!=NULL && lenTip>0 && color!=NULL && lenCol>0)
+	if(mascota!=NULL && tipo!=NULL && lenTip>0 && color!=NULL && lenCol>0 && cliente!=NULL && lenCliente>0)
 	{
 		do
 		{
@@ -270,13 +280,11 @@ int menuModificacionMascota(eMascota* mascota, eTipo tipo[], int lenTip, eColor 
 						printf("---------------IDTIPO---------------\n");
 						if(mostrarArrayTipo(tipo, lenTip)==0)
 						{
-							if(utn_getNumeroEnteroConIntentos(&aux.idTipo, "\nIngrese IdTipo ", "ERROR Reingrese edad entre 1000 y 1004 ", 1000, 1004, 5)==0)
+							if(utn_getNumeroEnteroConIntentos(&aux.idTipo, "\nIngrese IdTipo ", "ERROR Reingrese IdTipo entre 1000 y 1004 ", 1000, 1000+lenTip, 5)==0)
 							{
 								(*mascota).idTipo=aux.idTipo;
 
-								printf("\n Id        Nombre  IdTipo  DescTipo  IdColor DescColor Edad\n");
-								mostrarMascota(*mascota,tipo,lenTip,color, lenCol);
-								printf("-------------------------------------------------------\n");
+								mostrarUnMascotaConRotulo(*mascota, tipo, lenTip, color, lenCol, cliente,lenCliente);
 							}
 						}
 						break;
@@ -285,13 +293,11 @@ int menuModificacionMascota(eMascota* mascota, eTipo tipo[], int lenTip, eColor 
 						printf("---------------IDCOLOR---------------\n");
 						if(mostrarArrayColor(color, lenCol)==0)
 						{
-							if(utn_getNumeroEnteroConIntentos(&aux.idColor, "Ingrese idColor", "ERROR Reingrese idColor entre 5000 y 5004 ", 5000, 5004, 5)==0)
+							if(utn_getNumeroEnteroConIntentos(&aux.idColor, "Ingrese idColor", "ERROR Reingrese idColor entre 5000 y 5004 ", 5000, 5000+lenCol, 5)==0)
 							{
 								(*mascota).idColor=aux.idColor;
 
-								printf("\n Id        Nombre  IdTipo  DescTipo  IdColor DescColor Edad\n");
-								mostrarMascota(*mascota,tipo,lenTip,color, lenCol);
-								printf("-------------------------------------------------------\n");
+								mostrarUnMascotaConRotulo(*mascota, tipo, lenTip, color, lenCol, cliente,lenCliente);
 							}
 						}
 						break;
@@ -302,9 +308,7 @@ int menuModificacionMascota(eMascota* mascota, eTipo tipo[], int lenTip, eColor 
 						{
 							strcpy((*mascota).nombre,aux.nombre);
 
-							printf("\n Id        Nombre  IdTipo  DescTipo  IdColor DescColor Edad\n");
-							mostrarMascota(*mascota,tipo,lenTip,color, lenCol);
-							printf("-------------------------------------------------------\n");
+							mostrarUnMascotaConRotulo(*mascota, tipo, lenTip, color, lenCol, cliente,lenCliente);
 						}
 						break;
 
@@ -314,16 +318,14 @@ int menuModificacionMascota(eMascota* mascota, eTipo tipo[], int lenTip, eColor 
 						{
 							(*mascota).edad=aux.edad;
 
-							printf("\n Id        Nombre  IdTipo  DescTipo  IdColor DescColor Edad\n");
-							mostrarMascota(*mascota,tipo,lenTip,color, lenCol);
-							printf("-------------------------------------------------------\n");
+							mostrarUnMascotaConRotulo(*mascota, tipo, lenTip, color, lenCol, cliente,lenCliente);
 						}
 						break;
 
 					case 5:
 						printf("---------------GUARDAR---------------\n");
-						printf("\n Id        Nombre  IdTipo  DescTipo  IdColor DescColor Edad\n");
-						mostrarMascota(*mascota,tipo,lenTip,color, lenCol);
+
+						mostrarUnMascotaConRotulo(*mascota, tipo, lenTip, color, lenCol, cliente,lenCliente);
 
 						if(utn_getCaracterCorroboraDosCarac(&salir, "Desea guardar los cambios? S/N ", "ERROR reingrese S/N ", 's', 'n')==0)
 						{
@@ -348,6 +350,20 @@ int menuModificacionMascota(eMascota* mascota, eTipo tipo[], int lenTip, eColor 
 	return error;
 }
 
+
+int mostrarUnMascotaConRotulo(eMascota mascota, eTipo tipo[], int len,eColor color[], int lenCol, eCliente cliente[],int lenCliente)
+{
+	int error=-1;
+	if(tipo!=NULL && len>0 && color!=NULL && lenCol>0 && cliente!=NULL && lenCliente>0)
+	{
+		printf("\n Id        Nombre  IdTipo  DescTipo  IdColor DescColor Edad\n");
+		mostrarMascota(mascota,tipo,len,color, lenCol, cliente,lenCliente);
+		printf("-------------------------------------------------------\n");
+		error=0;
+	}
+
+	return error;
+}
 
 int cargarDescripcionMascota(int id, eMascota mascota[], int len, char desc[])
 {
@@ -375,16 +391,16 @@ int hardcodearMascota(eMascota mascota[], int len, int cant, int* pLegajo)
 
 	eMascota mascota2[10]=
 	{
-			{0,"Donato",1000,5000,1,0},
-			{0,"Carmen",1000,5001,2,0},
-			{0,"Chepi",1003,5002,3,0},
-			{0,"Alex",1003,5003,4,0},
-			{0,"German",1004,5004,5,0},
-			{0,"Maria",1000,5000,1,0},
-			{0,"Daniel",1001,5001,2,0},
-			{0,"Andrea",1002,5002,3,0},
-			{0,"Candela",1003,5003,4,0},
-			{0,"Magdalena",1004,5004,5,0},
+			{0,"Donato",1000,5000,500,1,0},
+			{0,"Carmen",1000,5001,501,2,0},
+			{0,"Chepi",1003,5002,502,3,0},
+			{0,"Alex",1003,5003,500,4,0},
+			{0,"German",1004,5004,501,5,0},
+			{0,"Maria",1000,5000,502,1,0},
+			{0,"Daniel",1001,5001,500,2,0},
+			{0,"Andrea",1002,5002,501,3,0},
+			{0,"Candela",1003,5003,502,4,0},
+			{0,"Magdalena",1004,5004,500,5,0},
 	};
 
 	if(mascota!=NULL&& mascota2!=NULL&& len>0 && cant>=0 && cant<=len && pLegajo!=NULL)

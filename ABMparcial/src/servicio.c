@@ -10,6 +10,7 @@
 #include <ctype.h>
 #include <string.h>
 #include "utn.h"
+#include "informes.h"
 #include "mascota.h"
 #include "tipo.h"
 #include "colores.h"
